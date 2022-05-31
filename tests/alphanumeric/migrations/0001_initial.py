@@ -8,17 +8,19 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('artnr', models.CharField(max_length=8, primary_key=True, serialize=False)),
-                ('name', models.CharField(blank=True, default='', max_length=32)),
-                ('created', models.DateTimeField(default=tastypie.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=tastypie.utils.timezone.now)),
+                (
+                    "artnr",
+                    models.CharField(max_length=8, primary_key=True, serialize=False),
+                ),
+                ("name", models.CharField(blank=True, default="", max_length=32)),
+                ("created", models.DateTimeField(default=tastypie.utils.timezone.now)),
+                ("updated", models.DateTimeField(default=tastypie.utils.timezone.now)),
             ],
         ),
     ]

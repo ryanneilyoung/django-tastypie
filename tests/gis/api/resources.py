@@ -8,20 +8,20 @@ from gis.models import GeoNote
 
 class UserResource(ModelResource):
     class Meta:
-        resource_name = 'users'
+        resource_name = "users"
         queryset = User.objects.all()
         authorization = Authorization()
 
 
 class GeoNoteResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user')
+    user = fields.ForeignKey(UserResource, "user")
 
     class Meta:
-        resource_name = 'geonotes'
+        resource_name = "geonotes"
         queryset = GeoNote.objects.all()
         authorization = Authorization()
         filtering = {
-            'points': ALL,
-            'lines': ALL,
-            'polys': ALL,
+            "points": ALL,
+            "lines": ALL,
+            "polys": ALL,
         }

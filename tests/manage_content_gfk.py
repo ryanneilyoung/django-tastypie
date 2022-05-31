@@ -2,7 +2,8 @@
 import os
 import sys
 import warnings
-warnings.simplefilter('always')
+
+warnings.simplefilter("always")
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings_content_gfk")

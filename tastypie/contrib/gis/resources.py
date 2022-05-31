@@ -19,8 +19,9 @@ class GeometryApiField(ApiField):
     Custom ApiField for dealing with data from GeometryFields (by serializing
     them as GeoJSON).
     """
-    dehydrated_type = 'geometry'
-    help_text = 'Geometry data.'
+
+    dehydrated_type = "geometry"
+    help_text = "Geometry data."
 
     def hydrate(self, bundle):
         value = super(GeometryApiField, self).hydrate(bundle)
@@ -48,6 +49,7 @@ class ModelResource(resources.ModelResource):
     """
     ModelResource subclass that handles geometry fields as GeoJSON.
     """
+
     @classmethod
     def api_field_from_django_field(cls, f, default=CharField):
         """
@@ -58,10 +60,12 @@ class ModelResource(resources.ModelResource):
 
         return super(ModelResource, cls).api_field_from_django_field(f, default)
 
-    def filter_value_to_python(self, value, field_name, filters, filter_expr,
-            filter_type):
+    def filter_value_to_python(
+        self, value, field_name, filters, filter_expr, filter_type
+    ):
         value = super(ModelResource, self).filter_value_to_python(
-            value, field_name, filters, filter_expr, filter_type)
+            value, field_name, filters, filter_expr, filter_type
+        )
 
         # If we are filtering on a GeometryApiField then we should try
         # and convert this to a GEOSGeometry object.  The conversion

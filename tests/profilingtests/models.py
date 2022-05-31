@@ -4,8 +4,7 @@ from tastypie.utils import now, aware_datetime
 
 
 class Note(models.Model):
-    author = models.ForeignKey(User, blank=True, null=True,
-                               on_delete=models.CASCADE)
+    author = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     slug = models.SlugField()
     content = models.TextField(blank=True)
@@ -24,8 +23,8 @@ class Note(models.Model):
         return aware_datetime(2010, 4, 1, 0, 48)
 
     def get_absolute_url(self):
-        return '/some/fake/path/%s/' % self.pk
+        return "/some/fake/path/%s/" % self.pk
 
     @property
     def my_property(self):
-        return 'my_property'
+        return "my_property"

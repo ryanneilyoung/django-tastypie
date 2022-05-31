@@ -11,30 +11,63 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('sites', '0002_alter_domain_unique'),
+        ("sites", "0002_alter_domain_unique"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AuthorProfile',
+            name="AuthorProfile",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('short_bio', models.CharField(blank=True, default='', max_length=255)),
-                ('bio', models.TextField(blank=True, default='')),
-                ('sites', models.ManyToManyField(related_name='author_profiles', to='sites.Site')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='author_profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("short_bio", models.CharField(blank=True, default="", max_length=255)),
+                ("bio", models.TextField(blank=True, default="")),
+                (
+                    "sites",
+                    models.ManyToManyField(
+                        related_name="author_profiles", to="sites.Site"
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="author_profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Article',
+            name="Article",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('slug', models.SlugField(blank=True)),
-                ('content', models.TextField(blank=True, default='')),
-                ('added_on', models.DateTimeField(default=tastypie.utils.timezone.now)),
-                ('authors', models.ManyToManyField(related_name='articles', to='authorization.AuthorProfile')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("slug", models.SlugField(blank=True)),
+                ("content", models.TextField(blank=True, default="")),
+                ("added_on", models.DateTimeField(default=tastypie.utils.timezone.now)),
+                (
+                    "authors",
+                    models.ManyToManyField(
+                        related_name="articles", to="authorization.AuthorProfile"
+                    ),
+                ),
             ],
         ),
     ]

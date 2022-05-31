@@ -3,13 +3,13 @@ from django.db import models
 
 
 class CustomUser(AbstractBaseUser):
-    email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
+    email = models.EmailField(verbose_name="email address", max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     date_of_birth = models.DateField()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['date_of_birth']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["date_of_birth"]
 
     def get_full_name(self):
         return self.email

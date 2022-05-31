@@ -13,12 +13,17 @@ class DateRecord(models.Model):
     message = models.CharField(max_length=20)
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class Note(models.Model):
-    author = models.ForeignKey(AUTH_USER_MODEL, related_name='notes', blank=True,
-                               null=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        AUTH_USER_MODEL,
+        related_name="notes",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
     title = models.CharField("The Title", max_length=100)
     slug = models.SlugField()
     content = models.TextField(blank=True)
@@ -37,26 +42,27 @@ class Note(models.Model):
         return aware_datetime(2010, 4, 1, 0, 48)
 
     def get_absolute_url(self):
-        return '/some/fake/path/%s/' % self.pk
+        return "/some/fake/path/%s/" % self.pk
 
     @property
     def my_property(self):
-        return 'my_property'
+        return "my_property"
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class NoteWithEditor(Note):
-    editor = models.ForeignKey(AUTH_USER_MODEL, related_name='notes_edited',
-                               on_delete=models.CASCADE)
+    editor = models.ForeignKey(
+        AUTH_USER_MODEL, related_name="notes_edited", on_delete=models.CASCADE
+    )
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class Subject(models.Model):
-    notes = models.ManyToManyField(Note, related_name='subjects')
+    notes = models.ManyToManyField(Note, related_name="subjects")
     name = models.CharField(max_length=255)
     url = models.URLField()
     created = models.DateTimeField(default=now)
@@ -65,20 +71,19 @@ class Subject(models.Model):
         return self.name
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class MediaBit(models.Model):
-    note = models.ForeignKey(Note, related_name='media_bits',
-                             on_delete=models.CASCADE)
+    note = models.ForeignKey(Note, related_name="media_bits", on_delete=models.CASCADE)
     title = models.CharField(max_length=32)
-    image = models.FileField(blank=True, null=True, upload_to='bits/')
+    image = models.FileField(blank=True, null=True, upload_to="bits/")
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class AutoNowNote(models.Model):
@@ -94,14 +99,14 @@ class AutoNowNote(models.Model):
         return self.title
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class BigAutoNowModel(models.Model):
     id = models.BigAutoField(primary_key=True)
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class Counter(models.Model):
@@ -113,7 +118,7 @@ class Counter(models.Model):
         return self.name
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 int_source = count(1)
@@ -125,49 +130,53 @@ def get_next():
 
 class MyDefaultPKModel(models.Model):
     id = models.IntegerField(primary_key=True, default=get_next, editable=False)
-    content = models.TextField(blank=True, default='')
+    content = models.TextField(blank=True, default="")
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class MyUUIDModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     anotheruuid = models.UUIDField(default=uuid.uuid4)
-    content = models.TextField(blank=True, default='')
+    content = models.TextField(blank=True, default="")
     order = models.IntegerField(default=0, blank=True)
 
     class Meta:
-        ordering = ('order',)
-        app_label = 'core'
+        ordering = ("order",)
+        app_label = "core"
 
 
 class MyRelatedUUIDModel(models.Model):
     myuuidmodels = models.ManyToManyField(MyUUIDModel)
-    content = models.TextField(blank=True, default='')
+    content = models.TextField(blank=True, default="")
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class MyContainerModel(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class MyContainerItemModel(models.Model):
-    parent = models.ForeignKey(MyContainerModel, on_delete=models.CASCADE, related_name='item_set')
+    parent = models.ForeignKey(
+        MyContainerModel, on_delete=models.CASCADE, related_name="item_set"
+    )
     name = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"
 
 
 class MyContainerItemGroupingModel(models.Model):
-    parent = models.ForeignKey(MyContainerModel, on_delete=models.CASCADE, related_name='item_grouping_set')
+    parent = models.ForeignKey(
+        MyContainerModel, on_delete=models.CASCADE, related_name="item_grouping_set"
+    )
     grouping_item = models.ForeignKey(MyContainerItemModel, on_delete=models.CASCADE)
 
     class Meta:
-        app_label = 'core'
+        app_label = "core"

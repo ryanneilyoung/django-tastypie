@@ -16,33 +16,63 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='SlugBasedNote',
+            name="SlugBasedNote",
             fields=[
-                ('slug', models.SlugField(primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('content', models.TextField()),
-                ('is_active', models.BooleanField(default=True)),
+                ("slug", models.SlugField(primary_key=True, serialize=False)),
+                ("title", models.CharField(max_length=255)),
+                ("content", models.TextField()),
+                ("is_active", models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Note',
+            name="Note",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('slug', models.SlugField()),
-                ('content', models.TextField()),
-                ('is_active', models.BooleanField(default=True)),
-                ('created', models.DateTimeField(default=tastypie.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=tastypie.utils.timezone.now)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='notes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("slug", models.SlugField()),
+                ("content", models.TextField()),
+                ("is_active", models.BooleanField(default=True)),
+                ("created", models.DateTimeField(default=tastypie.utils.timezone.now)),
+                ("updated", models.DateTimeField(default=tastypie.utils.timezone.now)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="notes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='AnnotatedNote',
+            name="AnnotatedNote",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('annotations', models.TextField()),
-                ('note', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='annotated', to='basic.Note')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("annotations", models.TextField()),
+                (
+                    "note",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="annotated",
+                        to="basic.Note",
+                    ),
+                ),
             ],
         ),
     ]

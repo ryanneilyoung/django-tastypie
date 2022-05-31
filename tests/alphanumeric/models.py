@@ -4,7 +4,7 @@ from tastypie.utils import now
 
 class Product(models.Model):
     artnr = models.CharField(max_length=8, primary_key=True)
-    name = models.CharField(max_length=32, null=False, blank=True, default='')
+    name = models.CharField(max_length=32, null=False, blank=True, default="")
     created = models.DateTimeField(default=now)
     updated = models.DateTimeField(default=now)
 

@@ -8,11 +8,10 @@ from django.db import connections
 
 
 class TastyPieTestCase(TestCase):
-
     @contextmanager
-    def withAssertNumQueriesLessThan(self, value, using='default', verbose=False):
+    def withAssertNumQueriesLessThan(self, value, using="default", verbose=False):
         with CaptureQueriesContext(connections[using]) as context:
-            yield   # your test will be run here
+            yield  # your test will be run here
         if verbose:
             msg = "\r\n%s" % json.dumps(context.captured_queries, indent=4)
         else:
@@ -21,4 +20,4 @@ class TastyPieTestCase(TestCase):
 
 
 class TestCaseWithFixture(TastyPieTestCase):
-    fixtures = ['test_data.json']
+    fixtures = ["test_data.json"]

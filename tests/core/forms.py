@@ -12,7 +12,7 @@ class NoteForm(forms.ModelForm):
 class VeryCustomNoteForm(NoteForm):
     class Meta:
         model = Note
-        fields = ['title', 'content', 'created', 'is_active', 'foobaz']
+        fields = ["title", "content", "created", "is_active", "foobaz"]
 
 
 # Notes:

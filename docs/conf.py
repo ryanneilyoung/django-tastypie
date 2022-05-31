@@ -21,37 +21,38 @@ import datetime
 import os
 import sys
 
-sys.path.append('..')
+sys.path.append("..")
 
 from tastypie import __short_version__, __version__  # noqa
 
 docs_path = os.path.dirname(__file__)
-doctest_path = [os.path.join(docs_path, 'code'), os.path.join(docs_path, '..')]
+doctest_path = [os.path.join(docs_path, "code"), os.path.join(docs_path, "..")]
 
 # -- General configuration ----------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.doctest',
+    "sphinx.ext.doctest",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The encoding of source files.
 # source_encoding = 'utf-8'
 
 # The master toctree document.
-master_doc = 'toc'
+master_doc = "toc"
 
 # General information about the project.
-project = u'Tastypie'
-copyright = u'2010-%s, Daniel Lindsley & the Tastypie core team' %\
-    datetime.date.today().year
+project = u"Tastypie"
+copyright = (
+    u"2010-%s, Daniel Lindsley & the Tastypie core team" % datetime.date.today().year
+)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -77,7 +78,7 @@ release = __version__
 
 # List of directories, relative to source directory, that shouldn't be searched
 # for source files.
-exclude_trees = ['_build']
+exclude_trees = ["_build"]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -95,7 +96,7 @@ exclude_trees = ['_build']
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -105,14 +106,14 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'default'
+html_theme = "default"
 
 try:
     import sphinx_rtd_theme
 except ImportError:
     pass
 else:
-    html_theme = 'sphinx_rtd_theme'
+    html_theme = "sphinx_rtd_theme"
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -180,7 +181,7 @@ html_static_path = []
 # html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Tastypiedoc'
+htmlhelp_basename = "Tastypiedoc"
 
 
 # -- Options for LaTeX output -------------------------------------------------
@@ -195,8 +196,13 @@ htmlhelp_basename = 'Tastypiedoc'
 # (source start file, target name, title,
 #  author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'Tastypie.tex', u'Tastypie Documentation',
-        u'Daniel Lindsley \\& the Tastypie core team', 'manual'),
+    (
+        "index",
+        "Tastypie.tex",
+        u"Tastypie Documentation",
+        u"Daniel Lindsley \\& the Tastypie core team",
+        "manual",
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -220,7 +226,15 @@ latex_documents = [
 
 # List of tuples (startdocname, targetname, title, author, dir_entry,
 # description, category, toctree_only)
-texinfo_documents = [(
-    master_doc, "django-tastypie", "", "", "Tastypie",
-    "Documentation of the Tastypie framework", "Web development", False
-)]
+texinfo_documents = [
+    (
+        master_doc,
+        "django-tastypie",
+        "",
+        "",
+        "Tastypie",
+        "Documentation of the Tastypie framework",
+        "Web development",
+        False,
+    )
+]

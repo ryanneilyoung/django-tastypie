@@ -6,15 +6,15 @@ from tastypie import http
 
 class HttpTestCase(TestCase):
     def test_201(self):
-        response = http.HttpCreated(location='http://example.com/thingy/1/')
+        response = http.HttpCreated(location="http://example.com/thingy/1/")
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response['Location'], 'http://example.com/thingy/1/')
+        self.assertEqual(response["Location"], "http://example.com/thingy/1/")
 
     def test_201_no_location(self):
         # Regression.
         response = http.HttpCreated()
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response['Location'], '')
+        self.assertEqual(response["Location"], "")
 
     def test_202(self):
         response = http.HttpAccepted()

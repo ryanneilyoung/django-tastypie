@@ -2,7 +2,11 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.contrib.auth.models import User, Permission
 from core.models import Note
-from tastypie.authorization import Authorization, ReadOnlyAuthorization, DjangoAuthorization
+from tastypie.authorization import (
+    Authorization,
+    ReadOnlyAuthorization,
+    DjangoAuthorization,
+)
 from tastypie.exceptions import Unauthorized
 from tastypie import fields
 from tastypie.resources import Resource, ModelResource
@@ -10,40 +14,40 @@ from tastypie.resources import Resource, ModelResource
 
 class NoRulesNoteResource(ModelResource):
     class Meta:
-        resource_name = 'notes'
+        resource_name = "notes"
         queryset = Note.objects.filter(is_active=True)
         authorization = Authorization()
 
 
 class ReadOnlyNoteResource(ModelResource):
     class Meta:
-        resource_name = 'notes'
+        resource_name = "notes"
         queryset = Note.objects.filter(is_active=True)
         authorization = ReadOnlyAuthorization()
 
 
 class DjangoNoteResource(ModelResource):
     class Meta:
-        resource_name = 'notes'
+        resource_name = "notes"
         queryset = Note.objects.filter(is_active=True)
         authorization = DjangoAuthorization()
 
 
 class NotAModel(object):
-    name = 'Foo'
+    name = "Foo"
 
 
 class NotAModelResource(Resource):
-    name = fields.CharField(attribute='name')
+    name = fields.CharField(attribute="name")
 
     class Meta:
-        resource_name = 'notamodel'
+        resource_name = "notamodel"
         object_class = NotAModel
         authorization = DjangoAuthorization()
 
 
 class AuthorizationTestCase(TestCase):
-    fixtures = ['note_testdata']
+    fixtures = ["note_testdata"]
 
     def test_no_rules(self):
         request = HttpRequest()
@@ -51,21 +55,40 @@ class AuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.read_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.read_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'POST'
-        self.assertRaises(NotImplementedError, auth.create_list, resource.get_object_list(bundle.request), bundle)
-        self.assertTrue(auth.create_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "POST"
+        self.assertRaises(
+            NotImplementedError,
+            auth.create_list,
+            resource.get_object_list(bundle.request),
+            bundle,
+        )
+        self.assertTrue(
+            auth.create_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.update_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.update_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.delete_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.delete_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
     def test_read_only(self):
         request = HttpRequest()
@@ -73,31 +96,60 @@ class AuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.read_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.read_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'POST'
-        self.assertEqual(len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.create_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "POST"
+        self.assertEqual(
+            len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.create_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.update_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.update_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.delete_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.delete_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
 
 class DjangoAuthorizationTestCase(TestCase):
-    fixtures = ['note_testdata']
+    fixtures = ["note_testdata"]
 
     def setUp(self):
         super(DjangoAuthorizationTestCase, self).setUp()
-        self.add = Permission.objects.get_by_natural_key('add_note', 'core', 'note')
-        self.change = Permission.objects.get_by_natural_key('change_note', 'core', 'note')
-        self.delete = Permission.objects.get_by_natural_key('delete_note', 'core', 'note')
+        self.add = Permission.objects.get_by_natural_key("add_note", "core", "note")
+        self.change = Permission.objects.get_by_natural_key(
+            "change_note", "core", "note"
+        )
+        self.delete = Permission.objects.get_by_natural_key(
+            "delete_note", "core", "note"
+        )
         self.user = User.objects.all()[0]
         self.user.user_permissions.clear()
 
@@ -112,21 +164,49 @@ class DjangoAuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.read_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.read_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'POST'
-        self.assertEqual(len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.create_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "POST"
+        self.assertEqual(
+            len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.create_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.update_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.update_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.delete_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.delete_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
     def test_add_perm(self):
         request = HttpRequest()
@@ -141,21 +221,46 @@ class DjangoAuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.read_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.read_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'POST'
-        self.assertEqual(len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.create_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "POST"
+        self.assertEqual(
+            len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.create_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.update_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.update_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.delete_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.delete_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
     def test_change_perm(self):
         request = HttpRequest()
@@ -168,21 +273,43 @@ class DjangoAuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.read_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.read_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'POST'
-        self.assertEqual(len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.create_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "POST"
+        self.assertEqual(
+            len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.create_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.update_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.update_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.delete_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.delete_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
     def test_delete_perm(self):
         request = HttpRequest()
@@ -195,21 +322,46 @@ class DjangoAuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.read_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.read_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'POST'
-        self.assertEqual(len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.create_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "POST"
+        self.assertEqual(
+            len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.create_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0)
-        self.assertRaises(Unauthorized, auth.update_detail, resource.get_object_list(bundle.request)[0], bundle)
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 0
+        )
+        self.assertRaises(
+            Unauthorized,
+            auth.update_detail,
+            resource.get_object_list(bundle.request)[0],
+            bundle,
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.delete_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.delete_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
     def test_all(self):
         request = HttpRequest()
@@ -223,18 +375,34 @@ class DjangoAuthorizationTestCase(TestCase):
         auth = resource._meta.authorization
         bundle = resource.build_bundle(request=request)
 
-        bundle.request.method = 'GET'
-        self.assertEqual(len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.read_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "GET"
+        self.assertEqual(
+            len(auth.read_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.read_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'POST'
-        self.assertEqual(len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.create_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "POST"
+        self.assertEqual(
+            len(auth.create_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.create_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'PUT'
-        self.assertEqual(len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.update_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "PUT"
+        self.assertEqual(
+            len(auth.update_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.update_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )
 
-        bundle.request.method = 'DELETE'
-        self.assertEqual(len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 4)
-        self.assertTrue(auth.delete_detail(resource.get_object_list(bundle.request)[0], bundle))
+        bundle.request.method = "DELETE"
+        self.assertEqual(
+            len(auth.delete_list(resource.get_object_list(bundle.request), bundle)), 4
+        )
+        self.assertTrue(
+            auth.delete_detail(resource.get_object_list(bundle.request)[0], bundle)
+        )

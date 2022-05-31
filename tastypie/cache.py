@@ -7,6 +7,7 @@ class NoCache(object):
 
     Does nothing save for simulating the cache API.
     """
+
     def __init__(self, varies=None, *args, **kwargs):
         """
         Optionally accepts a ``varies`` list that will be used in the
@@ -42,7 +43,7 @@ class NoCache(object):
         No-op for returning values for cache-control
         """
         return {
-            'no_cache': True,
+            "no_cache": True,
         }
 
 
@@ -51,8 +52,15 @@ class SimpleCache(NoCache):
     Uses Django's current ``CACHES`` configuration to store cached data.
     """
 
-    def __init__(self, cache_name='default', timeout=None, public=None,
-                 private=None, *args, **kwargs):
+    def __init__(
+        self,
+        cache_name="default",
+        timeout=None,
+        public=None,
+        private=None,
+        *args,
+        **kwargs
+    ):
         """
         Optionally accepts a ``timeout`` in seconds for the resource's cache.
         Defaults to ``60`` seconds.
@@ -84,8 +92,8 @@ class SimpleCache(NoCache):
 
     def cache_control(self):
         control = {
-            'max_age': self.timeout,
-            's_maxage': self.timeout,
+            "max_age": self.timeout,
+            "s_maxage": self.timeout,
         }
 
         if self.public is not None:

@@ -1,15 +1,34 @@
 from tastypie.api import Api
 
-from related_resource.api.resources import NoteResource, UserResource,\
-    CategoryResource, TagResource, TaggableTagResource, TaggableResource,\
-    ExtraDataResource, FreshNoteResource, FreshMediaBitResource,\
-    ForumResource, CompanyResource, ProductResource, AddressResource,\
-    PersonResource, DogResource, DogHouseResource, BoneResource,\
-    LabelResource, PostResource, OrderResource, OrderItemResource,\
-    NoteWithUpdatableUserResource, ContactResource, ContactGroupResource
+from related_resource.api.resources import (
+    NoteResource,
+    UserResource,
+    CategoryResource,
+    TagResource,
+    TaggableTagResource,
+    TaggableResource,
+    ExtraDataResource,
+    FreshNoteResource,
+    FreshMediaBitResource,
+    ForumResource,
+    CompanyResource,
+    ProductResource,
+    AddressResource,
+    PersonResource,
+    DogResource,
+    DogHouseResource,
+    BoneResource,
+    LabelResource,
+    PostResource,
+    OrderResource,
+    OrderItemResource,
+    NoteWithUpdatableUserResource,
+    ContactResource,
+    ContactGroupResource,
+)
 
 
-api = Api(api_name='v1')
+api = Api(api_name="v1")
 api.register(NoteResource(), canonical=True)
 api.register(NoteWithUpdatableUserResource(), canonical=True)
 api.register(UserResource(), canonical=True)

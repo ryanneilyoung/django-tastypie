@@ -11,8 +11,7 @@ else:
 
 
 class GeoNote(models.Model):
-    user = models.ForeignKey(User, related_name='notes',
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="notes", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     slug = models.SlugField()
     content = models.TextField()
@@ -35,8 +34,9 @@ class GeoNote(models.Model):
 
 
 class AnnotatedGeoNote(models.Model):
-    note = models.OneToOneField(GeoNote, related_name='annotated', null=True,
-                                on_delete=models.CASCADE)
+    note = models.OneToOneField(
+        GeoNote, related_name="annotated", null=True, on_delete=models.CASCADE
+    )
     annotations = models.TextField()
 
     def __unicode__(self):

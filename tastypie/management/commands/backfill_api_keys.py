@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, **options):
         "Goes through all users and adds API keys for any that don't have one."
-        self.verbosity = int(options.get('verbosity', 1))
+        self.verbosity = int(options.get("verbosity", 1))
 
         User = get_user_model()
         for user in User.objects.all().iterator():

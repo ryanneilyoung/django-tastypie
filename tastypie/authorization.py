@@ -6,6 +6,7 @@ class Authorization(object):
     """
     A base class that provides no permissions checking.
     """
+
     def __get__(self, instance, owner):
         """
         Makes ``Authorization`` a descriptor of ``ResourceOptions`` and creates
@@ -39,7 +40,9 @@ class Authorization(object):
         Unimplemented, as Tastypie never creates entire new lists, but
         present for consistency & possible extension.
         """
-        raise NotImplementedError("Tastypie has no way to determine if all objects should be allowed to be created.")
+        raise NotImplementedError(
+            "Tastypie has no way to determine if all objects should be allowed to be created."
+        )
 
     def create_detail(self, object_list, bundle):
         """
@@ -95,6 +98,7 @@ class ReadOnlyAuthorization(Authorization):
 
     Only allows ``GET`` requests.
     """
+
     def read_list(self, object_list, bundle):
         return object_list
 
@@ -133,15 +137,15 @@ class DjangoAuthorization(Authorization):
     # By default, following `ModelAdmin` "convention", `app.change_model` is used
     # `django.contrib.auth.models.Permission` as perm code for viewing and updating.
     # https://docs.djangoproject.com/es/1.9/topics/auth/default/#permissions-and-authorization
-    READ_PERM_CODE = 'change'
+    READ_PERM_CODE = "change"
 
     def base_checks(self, request, model_klass):
         # If it doesn't look like a model, we can't check permissions.
-        if not model_klass or not getattr(model_klass, '_meta', None):
+        if not model_klass or not getattr(model_klass, "_meta", None):
             return False
 
         # User must be logged in to check permissions.
-        if not hasattr(request, 'user'):
+        if not hasattr(request, "user"):
             return False
 
         return model_klass
@@ -154,10 +158,10 @@ class DjangoAuthorization(Authorization):
         if klass is False:
             return []
 
-        permission = '%s.%s_%s' % (
+        permission = "%s.%s_%s" % (
             klass._meta.app_label,
             code,
-            get_module_name(klass._meta)
+            get_module_name(klass._meta),
         )
 
         if self.check_user_perm(request.user, permission, obj_list):
@@ -170,10 +174,10 @@ class DjangoAuthorization(Authorization):
         if klass is False:
             raise Unauthorized("You are not allowed to access that resource.")
 
-        permission = '%s.%s_%s' % (
+        permission = "%s.%s_%s" % (
             klass._meta.app_label,
             code,
-            get_module_name(klass._meta)
+            get_module_name(klass._meta),
         )
 
         if self.check_user_perm(request.user, permission, obj):
@@ -188,19 +192,19 @@ class DjangoAuthorization(Authorization):
         return self.perm_obj_checks(bundle.request, self.READ_PERM_CODE, bundle.obj)
 
     def create_list(self, object_list, bundle):
-        return self.perm_list_checks(bundle.request, 'add', object_list)
+        return self.perm_list_checks(bundle.request, "add", object_list)
 
     def create_detail(self, object_list, bundle):
-        return self.perm_obj_checks(bundle.request, 'add', bundle.obj)
+        return self.perm_obj_checks(bundle.request, "add", bundle.obj)
 
     def update_list(self, object_list, bundle):
-        return self.perm_list_checks(bundle.request, 'change', object_list)
+        return self.perm_list_checks(bundle.request, "change", object_list)
 
     def update_detail(self, object_list, bundle):
-        return self.perm_obj_checks(bundle.request, 'change', bundle.obj)
+        return self.perm_obj_checks(bundle.request, "change", bundle.obj)
 
     def delete_list(self, object_list, bundle):
-        return self.perm_list_checks(bundle.request, 'delete', object_list)
+        return self.perm_list_checks(bundle.request, "delete", object_list)
 
     def delete_detail(self, object_list, bundle):
-        return self.perm_obj_checks(bundle.request, 'delete', bundle.obj)
+        return self.perm_obj_checks(bundle.request, "delete", bundle.obj)

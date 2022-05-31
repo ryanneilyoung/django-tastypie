@@ -7,6 +7,7 @@ copied to the release notes for the next release.
 Major changes
 -------------
 
+removed the six library, all instances of __future__, moved to unittest.mock from the mock library
 
 Bugfixes
 --------

@@ -14,15 +14,15 @@ class UserResource(ModelResource):
 
 
 class NoteResource(ModelResource):
-    author = fields.ToOneField(UserResource, 'author', full=True)
+    author = fields.ToOneField(UserResource, "author", full=True)
 
     class Meta:
-        resource_name = 'notes'
+        resource_name = "notes"
         authorization = Authorization()
         filtering = {
-            'content': ['startswith', 'exact'],
-            'title': ALL,
-            'slug': ['exact'],
+            "content": ["startswith", "exact"],
+            "title": ALL,
+            "slug": ["exact"],
         }
-        ordering = ['title', 'slug', 'resource_uri']
+        ordering = ["title", "slug", "resource_uri"]
         queryset = Note.objects.all()

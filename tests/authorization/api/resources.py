@@ -27,7 +27,7 @@ class PerUserAuthorization(Authorization):
         return revised_list
 
     def update_detail(self, object_list, bundle):
-        if getattr(bundle.obj, 'pk', None):
+        if getattr(bundle.obj, "pk", None):
             try:
                 object_list.get(pk=bundle.obj.pk)
 
@@ -38,13 +38,13 @@ class PerUserAuthorization(Authorization):
                 pass
 
         # Fallback on the data sent.
-        for profile in bundle.data['authors']:
-            if hasattr(profile, 'keys'):
-                if bundle.request.user.pk == profile['user'].get('id'):
+        for profile in bundle.data["authors"]:
+            if hasattr(profile, "keys"):
+                if bundle.request.user.pk == profile["user"].get("id"):
                     return True
             else:
                 # Ghetto.
-                if bundle.request.user.pk == profile.strip('/').split('/')[-1]:
+                if bundle.request.user.pk == profile.strip("/").split("/")[-1]:
                     return True
 
         raise Unauthorized("Nope.")
@@ -63,7 +63,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         authentication = BasicAuthentication()
         authorization = Authorization()
-        excludes = ['email', 'password', 'is_staff', 'is_superuser']
+        excludes = ["email", "password", "is_staff", "is_superuser"]
 
 
 class SiteResource(ModelResource):
@@ -74,8 +74,10 @@ class SiteResource(ModelResource):
 
 
 class AuthorProfileResource(ModelResource):
-    user = fields.ToOneField(UserResource, 'user', full=True)
-    sites = fields.ToManyField(SiteResource, 'sites', related_name='author_profiles', full=True)
+    user = fields.ToOneField(UserResource, "user", full=True)
+    sites = fields.ToManyField(
+        SiteResource, "sites", related_name="author_profiles", full=True
+    )
 
     class Meta:
         queryset = AuthorProfile.objects.all()
@@ -84,7 +86,9 @@ class AuthorProfileResource(ModelResource):
 
 
 class ArticleResource(ModelResource):
-    authors = fields.ToManyField(AuthorProfileResource, 'authors', related_name='articles', full=True)
+    authors = fields.ToManyField(
+        AuthorProfileResource, "authors", related_name="articles", full=True
+    )
 
     class Meta:
         queryset = Article.objects.all()

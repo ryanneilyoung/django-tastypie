@@ -8,5 +8,5 @@ api.register(NoteResource())
 api.register(UserResource())
 
 urlpatterns = [
-    re_path(r'^api/', include(api.urls)),
+    re_path(r"^api/", include(api.urls)),
 ]

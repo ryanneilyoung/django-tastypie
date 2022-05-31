@@ -1,6 +1,7 @@
 import doctest
 import warnings
-warnings.simplefilter('ignore', Warning)  # noqa
+
+warnings.simplefilter("ignore", Warning)  # noqa
 
 from core.tests.api import *  # noqa
 from core.tests.authentication import *  # noqa
@@ -21,5 +22,6 @@ from core.tests.validation import *  # noqa
 # running them automatically around version 1.6
 def load_tests(loader, tests, ignore):
     from tastypie.utils import validate_jsonp
+
     tests.addTests(doctest.DocTestSuite(validate_jsonp))
     return tests

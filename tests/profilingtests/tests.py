@@ -18,7 +18,7 @@ class ProfilingTestCase(TestCase):
     def tearDown(self):
         p = pstats.Stats(self.pr)
         # p.strip_dirs()
-        p.sort_stats('tottime')
+        p.sort_stats("tottime")
         p.print_stats(75)
 
 
@@ -26,14 +26,13 @@ class ResourceProfilingTestCase(ProfilingTestCase):
     def setUp(self):
         self.resource = NoteResource()
         self.request = MockRequest()
-        self.request.path = '/api/v1/notes/'
-        self.request.GET = {'limit': '100'}
+        self.request.path = "/api/v1/notes/"
+        self.request.GET = {"limit": "100"}
 
-        user = User.objects.create_user('foo', 'pass')
+        user = User.objects.create_user("foo", "pass")
 
         for i in range(0, 200):
-            Note.objects.create(author=user, title='Note #%s' % i,
-                slug='note-%s' % i)
+            Note.objects.create(author=user, title="Note #%s" % i, slug="note-%s" % i)
 
         super(ResourceProfilingTestCase, self).setUp()
 

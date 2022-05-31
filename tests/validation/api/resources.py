@@ -14,45 +14,41 @@ from tastypie.validation import FormValidation
 
 class UserResource(ModelResource):
     class Meta:
-        resource_name = 'users'
+        resource_name = "users"
         queryset = User.objects.all()
         authorization = Authorization()
         validation = FormValidation(form_class=UserForm)
 
 
 class AnnotatedNoteForm(forms.ModelForm):
-
     class Meta:
         model = AnnotatedNote
-        exclude = ('note',)
+        exclude = ("note",)
 
 
 class AnnotatedNoteResource(ModelResource):
-
     class Meta:
-        resource_name = 'annotated'
+        resource_name = "annotated"
         queryset = AnnotatedNote.objects.all()
         authorization = Authorization()
         validation = FormValidation(form_class=AnnotatedNoteForm)
 
 
 class NoteForm(forms.ModelForm):
-
     class Meta:
         model = Note
-        exclude = ('user', 'created', 'updated')
+        exclude = ("user", "created", "updated")
 
 
 class NoteResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user')
-    annotated = fields.ForeignKey(AnnotatedNoteResource, 'annotated',
-        related_name='note', null=True, full=True)
+    user = fields.ForeignKey(UserResource, "user")
+    annotated = fields.ForeignKey(
+        AnnotatedNoteResource, "annotated", related_name="note", null=True, full=True
+    )
 
     class Meta:
-        resource_name = 'notes'
+        resource_name = "notes"
         queryset = Note.objects.all()
         authorization = Authorization()
         validation = FormValidation(form_class=NoteForm)
-        filtering = {
-            "created": ALL
-        }
+        filtering = {"created": ALL}

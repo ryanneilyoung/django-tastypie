@@ -10,9 +10,10 @@ from tastypie.utils import now
 
 class ApiAccess(models.Model):
     """A simple model for use with the ``CacheDBThrottle`` behaviors."""
+
     identifier = models.CharField(max_length=255)
-    url = models.TextField(blank=True, default='')
-    request_method = models.CharField(max_length=10, blank=True, default='')
+    url = models.TextField(blank=True, default="")
+    request_method = models.CharField(max_length=10, blank=True, default="")
     accessed = models.PositiveIntegerField()
 
     def __str__(self):
@@ -23,13 +24,15 @@ class ApiAccess(models.Model):
         return super(ApiAccess, self).save(*args, **kwargs)
 
 
-if 'django.contrib.auth' in settings.INSTALLED_APPS:
+if "django.contrib.auth" in settings.INSTALLED_APPS:
     import uuid
     from tastypie.compat import AUTH_USER_MODEL
 
     class ApiKey(models.Model):
-        user = models.OneToOneField(AUTH_USER_MODEL, related_name='api_key', on_delete=models.CASCADE)
-        key = models.CharField(max_length=128, blank=True, default='', db_index=True)
+        user = models.OneToOneField(
+            AUTH_USER_MODEL, related_name="api_key", on_delete=models.CASCADE
+        )
+        key = models.CharField(max_length=128, blank=True, default="", db_index=True)
         created = models.DateTimeField(default=now)
 
         def __str__(self):
@@ -48,11 +51,11 @@ if 'django.contrib.auth' in settings.INSTALLED_APPS:
             return hmac.new(new_uuid.bytes, digestmod=sha1).hexdigest()
 
         class Meta:
-            abstract = getattr(settings, 'TASTYPIE_ABSTRACT_APIKEY', False)
+            abstract = getattr(settings, "TASTYPIE_ABSTRACT_APIKEY", False)
 
     def create_api_key(sender, instance, created, **kwargs):
         """
         A signal for hooking up automatic ``ApiKey`` creation.
         """
-        if kwargs.get('raw', False) is False and created is True:
+        if kwargs.get("raw", False) is False and created is True:
             ApiKey.objects.create(user=instance)

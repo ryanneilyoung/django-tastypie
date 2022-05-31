@@ -23,11 +23,13 @@ class BackfillApiKeysTestCase(TestCase):
         self.assertEqual(ApiKey.objects.count(), 0)
 
         # Create a new User that ought not to have an API key.
-        new_user = self.User.objects.create_user(username='mr_pants', password='password', email='mister@pants.com')
+        new_user = self.User.objects.create_user(
+            username="mr_pants", password="password", email="mister@pants.com"
+        )
 
         self.assertEqual(ApiKey.objects.count(), 0)
 
-        call_command('backfill_api_keys', verbosity=0)
+        call_command("backfill_api_keys", verbosity=0)
 
         self.assertEqual(ApiKey.objects.count(), 1)
 
